@@ -1,0 +1,20 @@
+{% extends "news/base.html" %}
+{% block content %}
+    <form method="get">
+        {% csrf_token %}
+        <input type="text" name="q">
+        <button type="submit">Search</button>
+    </form>
+    {% regroup articles|dictsortreversed:"created" by created|slice:":-9" as news_list %}
+    {% for news in news_list %}
+        <h4>{{ news.grouper }}</h4>
+
+        <ul>
+          {% for i in news.list %}
+          <li><a href="/news/{{ i.link }}/">{{ i.title }}</a></li>
+          {% endfor %}
+        </ul>
+    {% endfor %}
+    <a target="_blank" href="/news/">News</a>
+    <a target="_blank" href="/news/create/">Create Article</a>
+{% endblock content %}
